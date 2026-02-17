@@ -1,0 +1,349 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Sora:wght@300;400;600;700&display=swap');
+
+:root {
+  --bg-deep: #052632;
+  --bg-mid: #0f5568;
+  --bg-glow: #ff8f3a;
+  --panel: rgba(8, 34, 46, 0.52);
+  --panel-active: rgba(10, 70, 88, 0.5);
+  --text-primary: #eef7f9;
+  --text-muted: #bcd5db;
+  --score: #ffd166;
+  --current: #0fb2c7;
+  --current-strong: #0a8ea0;
+  --btn-bg: rgba(242, 250, 252, 0.9);
+  --btn-text: #063647;
+  --winner-bg: #001f28;
+  --winner-name: #ffd166;
+  --shadow-lg: 0 2.4rem 5rem rgba(0, 0, 0, 0.35);
+  --radius-xl: 2.4rem;
+  --radius-md: 1.4rem;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+
+html {
+  font-size: 62.5%;
+  box-sizing: border-box;
+}
+
+body {
+  position: relative;
+  min-height: 100vh;
+  font-family: 'Sora', sans-serif;
+  font-weight: 400;
+  color: var(--text-primary);
+  background:
+    radial-gradient(circle at 16% 10%, #1d7688 0%, transparent 34%),
+    radial-gradient(circle at 88% 85%, #f39c54 0%, transparent 30%),
+    linear-gradient(135deg, var(--bg-deep), var(--bg-mid));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+body::before,
+body::after {
+  content: '';
+  position: fixed;
+  width: 42rem;
+  height: 42rem;
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(40px);
+  opacity: 0.28;
+  z-index: -1;
+  animation: drift 18s ease-in-out infinite;
+}
+
+body::before {
+  top: -8rem;
+  left: -10rem;
+  background: #42d6ef;
+}
+
+body::after {
+  right: -12rem;
+  bottom: -9rem;
+  background: var(--bg-glow);
+  animation-delay: -6s;
+}
+
+main {
+  position: relative;
+  width: min(102rem, 94vw);
+  height: min(64rem, 90vh);
+  min-height: 58rem;
+  display: flex;
+  overflow: hidden;
+  border-radius: var(--radius-xl);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: linear-gradient(150deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.03));
+  box-shadow: var(--shadow-lg);
+  backdrop-filter: blur(14px);
+}
+
+.player {
+  flex: 1;
+  padding: 7.2rem 5.4rem 4rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: var(--panel);
+  transition: background-color 0.35s ease, transform 0.35s ease;
+}
+
+.player + .player {
+  border-left: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.name {
+  font-family: 'Fraunces', serif;
+  font-size: 4rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 1.2rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.score {
+  font-size: 8rem;
+  font-weight: 700;
+  color: var(--score);
+  margin-bottom: auto;
+  line-height: 1;
+}
+
+.player--active {
+  background: linear-gradient(180deg, rgba(10, 74, 94, 0.62), var(--panel-active));
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12);
+}
+
+.player--active .name {
+  color: var(--text-primary);
+}
+
+.player--active .current {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.current {
+  width: 68%;
+  padding: 2rem;
+  border-radius: var(--radius-md);
+  text-align: center;
+  color: #fff;
+  background: linear-gradient(145deg, var(--current), var(--current-strong));
+  opacity: 0.82;
+  transform: translateY(4px);
+  box-shadow: 0 1rem 2.4rem rgba(0, 0, 0, 0.22);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
+.current-label {
+  font-size: 1.5rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 0.9rem;
+  color: rgba(238, 247, 249, 0.82);
+}
+
+.current-score {
+  font-size: 3.6rem;
+  font-weight: 600;
+}
+
+.btn {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 1px solid rgba(6, 54, 71, 0.18);
+  font-family: inherit;
+  font-size: 1.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  color: var(--btn-text);
+  cursor: pointer;
+  border-radius: 999px;
+  padding: 0.85rem 2.5rem;
+  background-color: var(--btn-bg);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 1.2rem 2.6rem rgba(0, 0, 0, 0.16);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.btn:hover {
+  transform: translate(-50%, -2px);
+  background-color: #fff;
+  box-shadow: 0 1.6rem 2.8rem rgba(0, 0, 0, 0.2);
+}
+
+.btn:active {
+  transform: translate(-50%, 2px);
+  box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.16);
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--current);
+  outline-offset: 3px;
+}
+
+.btn::first-letter {
+  font-size: 2.3rem;
+  display: inline-block;
+  margin-right: 0.6rem;
+  line-height: 1;
+}
+
+.btn--new {
+  top: 3.4rem;
+}
+
+.btn--roll {
+  top: 40rem;
+}
+
+.btn--hold {
+  top: 47rem;
+}
+
+.dice {
+  position: absolute;
+  left: 50%;
+  top: 17rem;
+  transform: translateX(-50%);
+  height: 10rem;
+  border-radius: 1.5rem;
+  box-shadow: 0 1.8rem 4rem rgba(0, 0, 0, 0.32);
+  animation: floatDice 3.4s ease-in-out infinite;
+}
+
+.player--winner {
+  background: linear-gradient(180deg, var(--winner-bg), #001821);
+}
+
+.player--winner .name {
+  color: var(--winner-name);
+}
+
+.player--winner .score {
+  color: #fff2c7;
+}
+
+.hidden {
+  display: none;
+}
+
+@keyframes floatDice {
+  0%,
+  100% {
+    transform: translate(-50%, 0);
+  }
+  50% {
+    transform: translate(-50%, -7px);
+  }
+}
+
+@keyframes drift {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(1.8rem, -1.2rem);
+  }
+}
+
+@media (max-width: 930px) {
+  main {
+    width: min(96rem, 95vw);
+    height: min(64rem, 92vh);
+  }
+
+  .player {
+    padding: 6rem 3rem 4rem;
+  }
+
+  .name {
+    font-size: 3.3rem;
+  }
+
+  .score {
+    font-size: 6.8rem;
+  }
+
+  .current {
+    width: min(25rem, 74%);
+  }
+}
+
+@media (max-width: 680px) {
+  main {
+    flex-direction: column;
+    width: 94vw;
+    height: min(82rem, 95vh);
+    min-height: 74rem;
+  }
+
+  .player {
+    padding: 3.2rem 2rem;
+  }
+
+  .player + .player {
+    border-left: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  .name {
+    font-size: 2.8rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .score {
+    font-size: 5.1rem;
+    margin-bottom: 1.3rem;
+  }
+
+  .current {
+    width: min(26rem, 82%);
+    padding: 1.5rem;
+  }
+
+  .dice {
+    top: 49%;
+    height: 8rem;
+  }
+
+  .btn {
+    font-size: 1.45rem;
+    padding: 0.75rem 2rem;
+  }
+
+  .btn::first-letter {
+    font-size: 2rem;
+  }
+
+  .btn--new {
+    top: auto;
+    bottom: 12.8rem;
+  }
+
+  .btn--roll {
+    top: auto;
+    bottom: 7rem;
+  }
+
+  .btn--hold {
+    top: auto;
+    bottom: 2rem;
+  }
+}
